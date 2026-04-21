@@ -41,5 +41,8 @@
 *.dwo
 
 # Ignore the builddrop
-
 BuildDrop/*
+
+# Keep assets (Wavefront  3D Files have the .obj extension...)
+
+!/assets/*
