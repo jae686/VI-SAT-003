@@ -43,6 +43,10 @@
 # Ignore the builddrop
 BuildDrop/*
 
+#ignore raw cd track
+cd/music/*.raw
+
 # Keep assets (Wavefront  3D Files have the .obj extension...)
 
 !/assets/*
+!/assets/obj/*.obj
