@@ -8,13 +8,20 @@ MODELS_NYA = $(MODELS_OBJ:%.obj=%.NYA)
 $(info ****** pre makefile ******)
 
 
-%.NYA : %.obj
-	$(info converting $< into $@)
-	$(MODEL_CONVERTER) -i "$(ASSET_OBJ_DIR)/$<" -o "$(ASSET_NYA_DIR)/$@"
-
-pre_build: $(MODELS_NYA)
+pre_build: convert_models
 	$(info ****** pre build step ******)
 	$(info $(MODELS_OBJ))
+	$(info $(MODELS_NYA))
+
+convert_models: $(ASSET_NYA_DIR)/$(MODELS_NYA)
+
+#%.NYA: %.obj
+#	$(info converting__debug $< into $@)
+#	$(MODEL_CONVERTER) -i "$(ASSET_OBJ_DIR)/$<" -o "$(ASSET_NYA_DIR)/$@"
+
+$(ASSET_NYA_DIR)/$(MODELS_NYA):$(MODELS_OBJ_P)
+	$(info converting $< into $@)
+	$(MODEL_CONVERTER) -i "$<" -o "$@"
 
 
 
