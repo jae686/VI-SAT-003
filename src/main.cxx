@@ -31,7 +31,7 @@ int main()
     fsm fsm;
 
     Assets assets;
-    assets.loadAssets();
+   // assets.loadAssets();
 
     Scene01 scene01_s = Scene01(&assets);
 
@@ -46,7 +46,7 @@ int main()
     while (1)
     {     
         state = fsm.getCurrentState(elapsedTime);
-
+        SRL::Debug::Print(1, 3, "Elapsed Time %f", elapsedTime);
         switch(state)
         {
             case fsm::states::scene01 : 

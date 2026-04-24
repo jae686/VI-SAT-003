@@ -13,7 +13,7 @@ class fsm
                                                 fsm::states::end
                                              };
 
-        std::vector<Fxp> sceneMsTimes = {1200 , 1200};
+        std::vector<Fxp> sceneMsTimes = {9900 , 1200};
 
         std::vector<Fxp> sceneMsTimesAccum = {};
         

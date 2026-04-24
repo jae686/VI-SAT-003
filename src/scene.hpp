@@ -36,10 +36,7 @@ class Scene01 : public BaseScene
         {          
    
             // Rotated rectangle points       
-            Vector3D point = Vector3D(0.0 , 0.0, 500.0);
-
-            SRL::Scene2D::DrawSprite(assets->texture_2, point); 
-   
+            Vector3D point = Vector3D(0.0 , 0.0, 500.0);   
         }
 };
 

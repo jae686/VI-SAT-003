@@ -27,88 +27,22 @@ class Assets : public BaseAssets
     public :
 
     // holds the demo assets
-    ModelObject cube_textured;
-    ModelObject cube_flat;
-    ModelObject cube_half;
-    ModelObject inercia;
-    ModelObject sfia;
-    ModelObject portugal;
-    ModelObject cylinder;
-    ModelObject iconosphere_wire;
-    ModelObject iconosphere_half;
+   
 
 
     std::vector<int32_t> texturePool;
-    
-
-
-    int32_t texture_1 ;
-    int32_t texture_2 ;
-    int32_t textures[10];
-    int32_t scene03_txt[3];
+      
     int32_t counters[7] = {0}; // to use for precistent data beetween frames
     SRL::Math::Types::Angle angles[6] = {0};
     Fxp floats[7] = {0};
 
-
-
     void loadAssets()
     {
-        
-       
+              
         SRL::Debug::Print(16, 28, "VI-SAT 03 Party Version");
-        Loader l = Loader(23);
+       // Loader l = Loader(1);
         
-        l.drawLoadingBarAnim(0);      
-        l.drawLoadingBarAnim(1);
-        cube_textured.LoadFile("CUBE_W.NYA");
-        sfia.LoadFile("SFIA001.NYA");
-        l.drawLoadingBarAnim(2);
-        cube_flat.LoadFile("CUBE_F.NYA");
-        l.drawLoadingBarAnim(3);
-        inercia.LoadFile("INERCIA.NYA");
-        l.drawLoadingBarAnim(4);
-        cube_half.LoadFile("CUBE_H.NYA"); 
-        l.drawLoadingBarAnim(5);
-        this->loadImgtoTilemapNGB0("CROSS02.TGA");
-        l.drawLoadingBarAnim(6);
-        texture_1 = this->loadTGA("INERCIA0.TGA");
-        l.drawLoadingBarAnim(7);
-        this->loadImgtoTilemapNGB2("BG1.TGA");
-        l.drawLoadingBarAnim(8);
-        texture_2 = this->loadTGA("TITLE.TGA");
-        l.drawLoadingBarAnim(9);
-        textures[0] = this->loadTGA("SRL.TGA");
-        l.drawLoadingBarAnim(10);
-        textures[1] = this->loadTGA("TXT01.TGA");
-        l.drawLoadingBarAnim(11);
-        cylinder.LoadFile("CYLD_W.NYA");
-        l.drawLoadingBarAnim(12);
-        textures[2] = this->loadTGA("AHEAD.TGA");
-        l.drawLoadingBarAnim(13);
-        this->loadImgtoTilemapNGB1("BG2.TGA");
-        l.drawLoadingBarAnim(14);
-        l.drawLoadingBarAnim(15);
-        l.drawLoadingBarAnim(16);
-        l.drawLoadingBarAnim(17);
-        iconosphere_half.LoadFile("ICO_M.NYA");
-        l.drawLoadingBarAnim(18);
-        iconosphere_wire.LoadFile("ICO_W.NYA");
-        l.drawLoadingBarAnim(19);
-        textures[4] = this->loadTGA("CREDITS1.TGA");
-        l.drawLoadingBarAnim(20);
-        textures[5] = this->loadTGA("CREDITS2.TGA");
-        l.drawLoadingBarAnim(20);
-        textures[6] = this->loadTGA("CREDITS3.TGA");
-        l.drawLoadingBarAnim(20);
-        textures[7] = this->loadTGA("CREDITS4.TGA");
-        l.drawLoadingBarAnim(20);
-        textures[8] = this->loadTGA("GLENZ.TGA");
-        l.drawLoadingBarAnim(21);
-        textures[9] = this->loadTGA("VI.TGA");
-        l.drawLoadingBarAnim(22);
-        l.drawLoadingBarAnim(23);
-
+        
         SRL::Debug::PrintClearScreen();
     };
 
