@@ -10,7 +10,7 @@
 class BaseScene
 {
     public :
-        virtual void draw(Fxp elapsed_ms); //
+        virtual void draw(uint32_t elapsed_ms); //
         uint16_t duration_frames = 0; //how many frames does the scene last (to be changed for time when frame time is available in SRL)
         Assets * assets = nullptr;
         
@@ -32,7 +32,7 @@ class Scene01 : public BaseScene
            
         }
 
-        void draw(Fxp elapsed_ms)
+        void draw(uint32_t elapsed_ms)
         {          
    
             // Rotated rectangle points       

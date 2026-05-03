@@ -13,16 +13,16 @@ class fsm
                                                 fsm::states::end
                                              };
 
-        std::vector<Fxp> sceneMsTimes = {9900 , 1200};
+        std::vector<uint32_t> sceneMsTimes = {32000 , 32000};
 
-        std::vector<Fxp> sceneMsTimesAccum = {};
+        std::vector<uint32_t> sceneMsTimesAccum = {};
         
         states state = states::scene01; 
     
         fsm()
         {
            // SRL::Debug::Print(1, 1, "FSM Constructor");
-            Fxp accum = 0;
+            uint32_t accum = 0;
             for(auto i : this->sceneMsTimes)
             {
                 accum = accum + i;
@@ -30,7 +30,7 @@ class fsm
             }
         }
 
-        enum class states getCurrentState(Fxp elapsedTime)
+        enum class states getCurrentState(uint32_t elapsedTime)
         {
             int index = 0;
             while(elapsedTime > sceneMsTimesAccum[index])
