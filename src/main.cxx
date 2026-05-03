@@ -7,6 +7,8 @@
 #include "scene.hpp"
 #include "fsm.hpp"
 #include "assets.hpp"
+#include "fonts.hpp"
+
 
 // Using to shorten names for Vector, HighColor, and other types
 using namespace SRL::Types;
@@ -25,30 +27,36 @@ using namespace SRL::Input;
 int main()
 {
     // ---- Initialize library ----
-    SRL::Core::Initialize(HighColor(0x00, 0x00, 0x00));
+    SRL::Core::Initialize(HighColor::Colors::Blue);
     SRL::Scene3D::SetDepthDisplayLevel(8);
  
     fsm fsm;
 
     Assets assets;
-   // assets.loadAssets();
+    assets.loadAssets();
+
+    bitmapfont fonts; 
 
     Scene01 scene01_s = Scene01(&assets);
 
     // Frame counter
-    Fxp elapsedTime = 0;
+    uint32_t elapsedTime = 0;
     SRL::Sound::Cdda::Analysis::Start();
     SRL::Sound::Cdda::SetVolume(4);
     SRL::Sound::Cdda::PlaySingle(2,true);
 
     fsm::states state = fsm::states::scene01;
 
+    bool firstFrame = true;
+
     while (1)
     {     
         state = fsm.getCurrentState(elapsedTime);
-        SRL::Debug::Print(1, 3, "Elapsed Time %f", elapsedTime);
+        SRL::Debug::Print(1, 3, "Elapsed Time %d", elapsedTime);
+        fonts.printChar('Y', 0.0 , 0.0);
         switch(state)
         {
+            
             case fsm::states::scene01 : 
                 scene01_s.draw(elapsedTime);
                 //SRL::Debug::Print(1, 3, "Scene 1");
@@ -57,11 +65,20 @@ int main()
             default : 
                 SRL::Sound::Cdda::StopPause(); 
                 SRL::Debug::PrintClearScreen();
-             
                 SRL::Debug::Print(2, 3, "END");
         }
         SRL::Core::Synchronize(); // Swap buffers and wait for VBlank
-        elapsedTime = elapsedTime + SRL::Timer::DeltaMilliseconds();
+        Fxp delta = SRL::Timer::DeltaMilliseconds();
+        if(firstFrame)
+        {
+            firstFrame = !firstFrame;
+        }
+        else
+        {
+            uint32_t delta_u = delta.As<uint32_t>();
+            elapsedTime = elapsedTime + delta_u;
+        }
+        
     }
 
     return 0;

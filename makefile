@@ -1,10 +1,10 @@
 # Configuration
-SRL_MAX_TEXTURES = 200          # Number of VDP1 texture slots
+SRL_MAX_TEXTURES = 255          # Number of VDP1 texture slots
 SRL_MODE = NTSC                 # Valid options are PAL or NTSC
 SRL_HIGH_RES = 0                # 480i mode
 SRL_FRAMERATE = 1               # Framerate control (0=dynamic, 1=< 60/value)
 SRL_MAX_CD_BACKGROUND_JOBS = 1  # Maximum number of files GFS can open at once
-SRL_MAX_CD_FILES = 256          # Maximum number of files on a CD
+SRL_MAX_CD_FILES = 255          # Maximum number of files on a CD
 SRL_MAX_CD_RETRIES = 5          # Number of times to retry on unsuccessful read
 SRL_MALLOC_METHOD = SIMPLE      # Allocation method: TLSF or SIMPLE are supported.
 
