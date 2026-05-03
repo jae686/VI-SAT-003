@@ -54,8 +54,54 @@ int16_t LoadPalette(SRL::Bitmap::BitmapInfo* bitmap)
         return id;
     }
 
+    SRL::Debug::AssertScreen("LoadPallet - no free bank", "fonts.hpp" ,  "LoadPallet()" );
     // No free bank found
     return -1;
+    }
+
+    int32_t loadTGA(const char* filename) //texture loading function
+    {
+        SRL::Bitmap::TGA *tga = new SRL::Bitmap::TGA(filename); // Loads TGA file into main RAM
+        SRL::Bitmap::BitmapInfo info = tga->GetInfo();          // Get info about the tga we are loading
+        int32_t textureIndex = -1;
+        SRL::Debug::PrintClearLine(6);
+        if(info.ColorMode == SRL::CRAM::TextureColorMode::RGB555) // RGBA texture
+        {
+            SRL::Debug::Print(1, 6, "RGB555");
+            textureIndex = SRL::VDP1::TryLoadTexture(tga);  // Loads TGA into VDP1
+        }
+        else
+        {
+            switch (info.ColorMode)
+            {
+            case SRL::CRAM::TextureColorMode::Paletted128 :
+                 SRL::Debug::Print(1, 6, "Paletted128");
+                break;
+            case SRL::CRAM::TextureColorMode::Paletted256 :
+                 SRL::Debug::Print(1, 6, "Paletted256");
+                break;
+            case SRL::CRAM::TextureColorMode::Paletted64 :
+                 SRL::Debug::Print(1, 6, "Paletted64");
+                break;
+            case SRL::CRAM::TextureColorMode::Paletted16 :
+                 SRL::Debug::Print(1, 6, "Paletted16");
+                break;
+            
+            default:
+                SRL::Debug::Print(1, 6, "??");
+                break;
+            }
+            textureIndex = SRL::VDP1::TryLoadTexture(tga, LoadPalette);
+        }
+        
+        delete tga; 
+        
+        if (textureIndex == -1)
+        {
+            SRL::Debug::AssertScreen("Failed loading texture %s", filename, "loadTGA", filename);
+        } 
+        
+        return textureIndex;
     }
 
 class bitmapfont
@@ -66,7 +112,7 @@ class bitmapfont
         int32_t char_spr_id[58] = {0};
         // ascci code space = 32
         // " " , !, " , # , $, %, &, ' , (, ), *, +, , , - , . , / , 0 , 
-        std::vector<char*> list = {"Y.TGA", "EXCLAMAT.TGA", "DQUOTE.TGA", 
+        std::vector<char*> list = {"SPACE.TGA", "EXCLAMAT.TGA", "DQUOTE.TGA", 
                                          "HASHTAG.TGA","HASHTAG.TGA", "PERCENTA.TGA", 
                                          "ECOMER.TGA", "SQUOTE.TGA", "LPARENTE.TGA" ,
                                          "RPARENTE.TGA", "MIDDOT.TGA", "PLUS.TGA",
@@ -98,13 +144,15 @@ class bitmapfont
              SRL::Debug::AssertScreen("SRL::Cd::ChangeDir error %d", "fonts.hpp" ,  "bitmapfont()" , res);
         }
 
-        for (int i = 0 ; i < 55 ; i++)
+        for (int i = 0 ; i < 58 ; i++)
         {
             SRL::Debug::PrintClearLine(4);
             SRL::Debug::Print(1, 4, "Loading %s", this->list[i]);
             char_spr_id[i] = loadTGA(this->list[i]);
             SRL::Debug::PrintClearLine(4);
+            SRL::Debug::PrintClearLine(5);
             SRL::Debug::Print(1, 4, "Loaded %s , %d", this->list[i], char_spr_id[i] );
+            SRL::Debug::Print(1, 5, "Free mem %d ", SRL::VDP1::GetAvailableMemory());
 
         }         
         SRL::Cd::ChangeDir((char*) 0);
@@ -120,32 +168,22 @@ class bitmapfont
         SRL::Scene2D::DrawSprite(char_spr_id[(int)c], Vector3D(x, y, 500.0));
     }
 
-    int32_t loadTGA(const char* filename) //texture loading function
+    void PrintString(const char* s, uint16_t size, Fxp x, Fxp y, Fxp scale = 1.0)
     {
-        SRL::Bitmap::TGA *tga = new SRL::Bitmap::TGA(filename); // Loads TGA file into main RAM
-        SRL::Bitmap::BitmapInfo info = tga->GetInfo();          // Get info about the tga we are loading
-        int32_t textureIndex = -1;
-        
-        if(info.ColorMode == SRL::CRAM::TextureColorMode::RGB555) // RGBA texture
-        {
-            textureIndex = SRL::VDP1::TryLoadTexture(tga);  // Loads TGA into VDP1
-        }
-        else
-        {
-            //assume is pallet texture
-            textureIndex = SRL::VDP1::TryLoadTexture(tga, LoadPalette);
-        }
-        
-        delete tga; 
-        
-        if (textureIndex == -1)
-        {
-            SRL::Debug::AssertScreen("Failed loading texture %s", filename, "loadTGA", filename);
-        } 
-        
-        return textureIndex;
-}
+        Fxp x_offset = 32;
+        Fxp x_curr = x ;
 
+        
+
+        for(int i = 0 ; i < size ; i++)
+        {
+            this->printChar(s[i], x_curr, y);
+            x_curr = x_curr + x_offset; 
+        }
+
+    }
+
+    
 
 };
 

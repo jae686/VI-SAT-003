@@ -53,7 +53,8 @@ int main()
     {     
         state = fsm.getCurrentState(elapsedTime);
         SRL::Debug::Print(1, 3, "Elapsed Time %d", elapsedTime);
-        fonts.printChar('Y', 0.0 , 0.0);
+        // fonts.printChar('Y', 0.0 , 0.0);
+        fonts.PrintString("TESTE", 5 ,-128, 0);
         switch(state)
         {
             
