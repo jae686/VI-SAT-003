@@ -6,13 +6,9 @@
 #include "loader.hpp"
 
 
-enum class assetType : int {TEXTURE , NGB0, NGB1, RBG0, MESH, UNDEFINED};
 
-class Cfilename
-{
-    char filename[13] = {0};
-    assetType type = assetType::UNDEFINED;
-};
+
+
 
 
 class BaseAssets
@@ -27,8 +23,6 @@ class Assets : public BaseAssets
     public :
 
     // holds the demo assets
-   
-
 
     std::vector<int32_t> texturePool;
       
@@ -38,11 +32,8 @@ class Assets : public BaseAssets
 
     void loadAssets()
     {
-              
         SRL::Debug::Print(16, 28, "VI-SAT 03 Party Version");
-       // Loader l = Loader(1);
-        
-        
+        Loader l = Loader(1);    
         SRL::Debug::PrintClearScreen();
     };
 
