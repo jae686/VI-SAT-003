@@ -54,7 +54,13 @@ int main()
         state = fsm.getCurrentState(elapsedTime);
         SRL::Debug::Print(1, 3, "Elapsed Time %d", elapsedTime);
         // fonts.printChar('Y', 0.0 , 0.0);
-        fonts.PrintString("TESTE", 5 ,-128, 0);
+        //fonts.PrintString("TESTE", 5 ,-128, 0);
+        // fonts.PrintString("TESTE", 0 ,0 , 10, 1.0, -45.0);
+        fonts.PrintString("FRANGO", -120 ,0 , 10, 1.0, -45.0);
+        fonts.PrintString("TESTE",  -60 ,0 , 10, 1.0, -45.0);
+        fonts.PrintString("123456",  0 ,0 , 10, 1.0, -45.0);
+        fonts.PrintString("%&QUERT",  60 ,0 , 10, 1.0, -45.0);
+        fonts.PrintString("TOSTA",  60 ,0 , 10, 1.0, -45.0);
         switch(state)
         {
             
