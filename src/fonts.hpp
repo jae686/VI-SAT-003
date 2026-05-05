@@ -109,7 +109,7 @@ class bitmapfont
     // Load color palettes here
     
     private : 
-        int32_t char_spr_id[58] = {0};
+        int32_t char_spr_id[(127-32)] = {0}; //ASCII printable characters (character code 32-127)
         // ascci code space = 32
         // " " , !, " , # , $, %, &, ' , (, ), *, +, , , - , . , / , 0 , 
         std::vector<char*> list = {"SPACE.TGA", "EXCLAMAT.TGA", "DQUOTE.TGA", 
@@ -144,6 +144,30 @@ class bitmapfont
              SRL::Debug::AssertScreen("SRL::Cd::ChangeDir error %d", "fonts.hpp" ,  "bitmapfont()" , res);
         }
 
+       for(int i = 0 ; i < 95 ; i++) // 127 - 32 = 95
+        {
+            SRL::Debug::PrintClearLine(4);
+           // SRL::Debug::Print(1, 4, "Loading %s", this->list[i]);
+            char filename[13] = {0};
+            snprintf(filename, 13, "%d.TGA", i + 32);
+            bool exists = SRL::Cd::File(filename).Exists();
+            SRL::Debug::Print(1, 5, "File %s exists ? %d", filename, exists);
+            if(exists)
+            {
+                SRL::Debug::Print(1, 4, "Loading %s", filename);
+                char_spr_id[i] = loadTGA(filename);
+                SRL::Debug::Print(1, 4, "Loaded %s , %d", filename, char_spr_id[i] );
+            }else
+            {
+                char_spr_id[i] = char_spr_id[0]; // space character as fallback
+                SRL::Debug::Print(1, 4, "File %s not found, using space as fallback", filename);
+            }
+           // SRL::Debug::PrintClearLine(4);
+          //  SRL::Debug::PrintClearLine(5);
+            SRL::Debug::Print(1, 5, "Free mem %d ", SRL::VDP1::GetAvailableMemory());
+
+        }
+       /*
         for (int i = 0 ; i < 58 ; i++)
         {
             SRL::Debug::PrintClearLine(4);
@@ -153,8 +177,9 @@ class bitmapfont
             SRL::Debug::PrintClearLine(5);
             SRL::Debug::Print(1, 4, "Loaded %s , %d", this->list[i], char_spr_id[i] );
             SRL::Debug::Print(1, 5, "Free mem %d ", SRL::VDP1::GetAvailableMemory());
-
-        }         
+        }     
+        */
+        
         SRL::Cd::ChangeDir((char*) 0);
     }
 
