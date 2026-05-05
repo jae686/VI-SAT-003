@@ -167,19 +167,115 @@ class bitmapfont
         SRL::Debug::Print(1, 4, "char %d , index %d, id %d", a, c , char_spr_id[(int)c]);
         SRL::Scene2D::DrawSprite(char_spr_id[(int)c], Vector3D(x, y, 500.0));
     }
-
+/*
     void PrintString(const char* s, uint16_t size, Fxp x, Fxp y, Fxp scale = 1.0)
     {
         Fxp x_offset = 32;
         Fxp x_curr = x ;
-
-        
-
+    
         for(int i = 0 ; i < size ; i++)
         {
             this->printChar(s[i], x_curr, y);
             x_curr = x_curr + x_offset; 
         }
+
+    }
+*/
+    
+    Matrix33 translationM(Fxp x, Fxp y)
+    {
+        Matrix33 transform = Matrix33::Identity();
+        transform.Row0.Z = x;
+        transform.Row1.Z = y;
+        return transform;
+    }
+
+
+    void PrintString(const char* s, Fxp x, Fxp y, Fxp spacing, Fxp scale, Fxp angle)
+    {
+        
+       
+       Vector2D cursor = Vector2D(0,0);
+       Vector2D points[4] = {Vector2D(0.0)};
+       
+       Matrix33 transformR = Matrix33::Identity();
+       transformR = transformR.CreateRotationZ(Angle::FromDegrees(angle));
+
+       Matrix33 transformT = translationM(x,y);
+
+       Matrix33 transformS = Matrix33::Identity();
+       transformS = transformS.CreateScale(Vector3D(1.0));
+
+
+
+       
+       for(int i = 0 ; s[i] != 0 ; i++)
+       {
+
+        //determine character size
+        //get the index 
+        char c = s[i] - 32;
+
+        //get the texture dimensions
+        uint16_t h = SRL::VDP1::Textures[char_spr_id[(int)c]].Height;
+        uint16_t w = SRL::VDP1::Textures[char_spr_id[(int)c]].Width;
+        
+        //set a quad at the center, with the size of the quad
+        
+        Fxp h2 = Fxp::Convert(h/2);
+        Fxp w2 = Fxp::Convert(w/2);
+
+
+        points[0] = Vector2D(-w2, -h2);
+        points[1] = Vector2D(w2,  -h2);
+        points[2] = Vector2D( w2,  h2);
+        points[3] = Vector2D(-w2,  h2);
+
+        //add the offset
+
+        /*
+        for(int j = 0 ; j<4 ; j++)
+        {
+            points[j] = points[j] + cursor;
+        }
+       */
+       
+        Matrix33 transforms =  translationM(x,y) * transformR *  translationM(cursor.X,cursor.Y) * transformS;
+
+        //rotate the points
+
+        Vector3D vec3_points[4] = {Vector3D(0.0)};
+        vec3_points[0] = Vector3D(points[0], 1.0);
+        vec3_points[1] = Vector3D(points[1], 1.0);
+        vec3_points[2] = Vector3D(points[2], 1.0);
+        vec3_points[3] = Vector3D(points[3], 1.0);
+
+       
+       
+        for(int j = 0 ; j < 4 ; j++)
+        {
+            //multiply vector by our rotation matrix
+            vec3_points[j] = transforms *  vec3_points[j];
+            // get back to vector2D type that  SRL::Scene2D::DrawSprite accepts
+            points[j].X = vec3_points[j].X;
+            points[j].Y = vec3_points[j].Y;
+        }
+        
+        
+         //update the cursor position for the next iteration
+        cursor.X = cursor.X + spacing + Fxp::Convert(w);
+        
+        // draw out sprite
+
+        SRL::Scene2D::DrawSprite(char_spr_id[(int)c], points, 50.0 );
+
+       
+    
+       }
+
+
+        
+       
 
     }
 
