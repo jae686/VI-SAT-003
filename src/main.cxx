@@ -60,7 +60,7 @@ int main()
        // fonts.PrintString("TESTE",  -60 ,0 , 10, 0.5, -45.0);
         fonts.PrintString("123456",  0 ,0 , 10, 0.5, 0.0);
       //  fonts.PrintString("%&QUERT",  60 ,0 , 10, 0.5, -45.0);
-        fonts.PrintString("TOSTA",  100,-50 , 10, 1, 0.0);
+        fonts.PrintString("TOSTA",  -100,-50 , 10, 1, 0.0);
         switch(state)
         {
             
