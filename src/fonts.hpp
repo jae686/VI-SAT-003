@@ -110,9 +110,9 @@ class bitmapfont
             SRL::Debug::AssertScreen("Failed to get free CRAM bank for font palette", "fonts.hpp" ,  "bitmapfont()" );
         }
         mypalette = SRL::CRAM::Palette(SRL::CRAM::TextureColorMode::Paletted256, character_palette2);           
-        // Define 256 colors for the palette (only first 16 will be used for 16 color textures, first 64 for 64 color textures and so on)
+
         // Todo : define some palette templates and use them instead of hardcoding colors here
-        
+
         colors[0] = HighColor(0,10,0); //transparent
         colors[1] = HighColor(64,255,64); //white
         colors[2] = HighColor(255,0,0); //Red
