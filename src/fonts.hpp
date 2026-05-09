@@ -207,7 +207,7 @@ class bitmapfont
     }
 
 
-    void PrintString(const char* s, Fxp x, Fxp y, Fxp spacing, Fxp scale, Fxp angle)
+    void PrintString(const char* s, Fxp x, Fxp y, Fxp spacing, Fxp scale, Fxp angle, uint16_t paletteSelect = -1)
     {       
        Vector2D cursor = Vector2D(0,0);
        Vector2D points[4] = {Vector2D(0.0)};
@@ -264,12 +264,12 @@ class bitmapfont
         
         //update the cursor position for the next iteration
         cursor.X = cursor.X + spacing + Fxp::Convert(w);
-                
-        //SRL::Scene2D::DrawSprite(char_spr_id[(int)c], points, 500.0 );
-         
-        uint16_t paletteIndex =  palettes[0].GetId() + i%numberOfPalettes; // Just an example of how to select a palette for each character, you can customize this as needed; 
+       
+        uint16_t selectedPalette = paletteSelect >= 0 ? paletteSelect % numberOfPalettes : i % numberOfPalettes; 
+      
+        uint16_t paletteIndex =  palettes[i % numberOfPalettes].GetId(); 
         SRL::Debug::Print(1, 6, "palette index %d", paletteIndex);
-        SPR_ATTR attr = SPR_ATTRIBUTE( char_spr_id[(int)c],paletteIndex << 4, No_Gouraud, 0 | ECdis | CL16Bnk , FUNC_Texture  );
+        SPR_ATTR attr = SPR_ATTRIBUTE( char_spr_id[(int)c], paletteIndex << 4, No_Gouraud, 0 | ECdis | CL16Bnk , FUNC_Texture  );
         SRL::Scene2D::Draw( &attr,points, 500.0);
         
        }
