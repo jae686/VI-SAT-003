@@ -39,6 +39,9 @@ class bitmapfont
     // Load color palettes here
     
     private : 
+        
+        int8_t numberOfPalettes = 8;
+
         int32_t char_spr_id[(127-32)] = {0}; //ASCII printable characters (character code 32-127)
         int32_t character_palette = 0; //palettes for the characters, if they are palette textures
         int32_t character_palette2 = 0; //palettes for the characters, if they are palette textures
@@ -100,77 +103,58 @@ class bitmapfont
         return textureIndex;
     }
 
+
+    void createPaletes()
+    {
+        
+        // Palette baseline for fonts
+
+        colors[0] = HighColor(0,0,0); //transparent
+        colors[1] = HighColor::Colors::White ; //
+        colors[2] = HighColor::Colors::Black; //
+        colors[3] = HighColor::Colors::Red; //
+        colors[4] = HighColor::Colors::Green; //
+        colors[5] = HighColor::Colors::Blue; //
+        colors[6] = HighColor::Colors::Magenta; //
+        colors[7] = HighColor::Colors::Yellow; //
+        colors[8] = HighColor(0,0,0); //transparent
+        colors[9] = HighColor::Colors::White ; //
+        colors[10] = HighColor::Colors::Black; //
+        colors[11] = HighColor::Colors::Red; //
+        colors[12] = HighColor::Colors::Green; //
+        colors[13] = HighColor::Colors::Blue; //
+        colors[14] = HighColor::Colors::Magenta; //
+        colors[15] = HighColor::Colors::Yellow; //
+     
+       
+
+        
+        for(int i = 0; i < numberOfPalettes; i++)
+        {
+            uint32_t palette = SRL::CRAM::GetFreeBank(SRL::CRAM::TextureColorMode::Paletted16);
+            if(palette < 0)
+            {
+                SRL::Debug::AssertScreen("Failed to get free CRAM bank for font palette", "fonts.hpp" ,  "createPaletes()" );
+            }
+            palettes[i] = SRL::CRAM::Palette(SRL::CRAM::TextureColorMode::Paletted16, palette);          
+            
+            HighColor paletteColors[16];
+            for(int j = 0; j < 16; j++)
+            {
+                paletteColors[j] = colors[(i+j) % 16]; // Just an example of how to assign colors to palettes, you can customize this as needed
+            }
+            
+            palettes[i].Load(paletteColors, 16); // Load colors to CRAM
+            SRL::CRAM::SetBankUsedState(palette, SRL::CRAM::TextureColorMode::Paletted16, true);
+        }
+    }
+
     bitmapfont()
     {
-        //create palette for the font characters, if they are paletted textures
-
-        character_palette2 = SRL::CRAM::GetFreeBank(SRL::CRAM::TextureColorMode::Paletted16);
-        if(character_palette2 < 0)
-        {
-            SRL::Debug::AssertScreen("Failed to get free CRAM bank for font palette", "fonts.hpp" ,  "bitmapfont()" );
-        }
-        mypalette = SRL::CRAM::Palette(SRL::CRAM::TextureColorMode::Paletted256, character_palette2);           
-
-        // Todo : define some palette templates and use them instead of hardcoding colors here
-
-        colors[0] = HighColor(0,10,0); //transparent
-        colors[1] = HighColor(64,255,64); //white
-        colors[2] = HighColor(255,0,0); //Red
-        colors[3] = HighColor(255,0,0); //Red
-        colors[4] = HighColor(0,0,0); //black
-        colors[5] = HighColor(0,255,0); //Green
-        colors[6] = HighColor(0,255,0); //Green
-        colors[7] = HighColor(0,0,0); //    black
-        colors[8] = HighColor(0,0,255); //   blue
-        colors[9] = HighColor(0,0,255); //blue
-        colors[10] = HighColor(255,0,255); // magenta
-        colors[11] = HighColor(0,255,0); //green
-        colors[12] = HighColor(0,0,255); //blue
-        colors[13] = HighColor(255,255,0); //yellow
-        colors[14] = HighColor(255,0,255); //magenta
-        colors[15] = HighColor(0,255,255); //cyan
-        colors[16] = HighColor(0,10,0); //transparent
-        colors[17] = HighColor(255,0,0); 
-        colors[18] = HighColor(30,0,31); //white
-        colors[19] = HighColor(0,31,0); //green
-        colors[20] = HighColor(0,0,14); //blue
-        colors[21] = HighColor(31,31,0); //yellow
-        colors[22] = HighColor(31,0,31); //magenta
-        colors[23] = HighColor(0,31,31); //cyan
-        colors[24] = HighColor(0,10,0); //transparent
-        colors[25] = HighColor(31,0,0); //red
-        colors[26] = HighColor(31,31,31); //white
-        colors[27] = HighColor(0,31,0); //green
-        colors[28] = HighColor(0,0,31); //blue
-        colors[29] = HighColor(31,31,0); //yellow
-        colors[30] = HighColor(31,0,31); //magenta
-        colors[31] = HighColor(0,31,31); //cyan
-        colors[32] = HighColor(0,10,0); //transparent
-        colors[33] = HighColor(31,0,0); //red
-        colors[34] = HighColor(31,31,31); //white
-        colors[35] = HighColor(0,31,0); //green
-        colors[36] = HighColor(0,0,31); //blue
-        colors[37] = HighColor(31,31,0); //yellow
-        colors[38] = HighColor(31,0,31); //magenta
-        colors[39] = HighColor(0,128,128); //cyan
-
-        for (int i = 40; i < 255; i++)
-        {
-            colors[i] = HighColor(255,255,255); //transparent
-        }
-        //... define more 256 colors as needed
         
-
-        
-        if (mypalette.Load(colors, -1) < 0)
-        {
-            SRL::Debug::AssertScreen("Failed to load font palette to CRAM", "fonts.hpp" ,  "bitmapfont()" );
-        }
-
-        SRL::CRAM::SetBankUsedState(character_palette2, SRL::CRAM::TextureColorMode::Paletted16, true);
-
-             
         //load all textures from the list
+
+        createPaletes();
         int32_t res = SRL::Cd::ChangeDir("FONT");	
 
         if (res < 0 )
@@ -196,8 +180,7 @@ class bitmapfont
                 char_spr_id[i] = char_spr_id[0]; // space character as fallback
                 SRL::Debug::Print(1, 4, "File %s not found, using space as fallback", filename);
             }
-           // SRL::Debug::PrintClearLine(4);
-          //  SRL::Debug::PrintClearLine(5);
+
             SRL::Debug::Print(1, 5, "Free mem %d ", SRL::VDP1::GetAvailableMemory());
 
         }
@@ -259,7 +242,7 @@ class bitmapfont
         points[2] = Vector2D( w2,  h2);
         points[3] = Vector2D(-w2,  h2);
    
-        Matrix33 transforms =  translationM(x,y) * transformR *  translationM(cursor.X,cursor.Y) * transformS;     
+        Matrix33 transforms =  transformR *  translationM(cursor.X,cursor.Y) * transformS * translationM(x,y);     
 
         Vector3D vec3_points[4] = {Vector3D(0.0)};
         vec3_points[0] = Vector3D(points[0], 1.0);
@@ -279,20 +262,14 @@ class bitmapfont
             points[j].Y = vec3_points[j].Y;
         }
         
-        
-         //update the cursor position for the next iteration
+        //update the cursor position for the next iteration
         cursor.X = cursor.X + spacing + Fxp::Convert(w);
-        
-        
+                
         //SRL::Scene2D::DrawSprite(char_spr_id[(int)c], points, 500.0 );
          
-        
-        uint16_t paletteIndex = mypalette.GetId() ; 
-
+        uint16_t paletteIndex =  palettes[0].GetId() + i%numberOfPalettes; // Just an example of how to select a palette for each character, you can customize this as needed; 
         SRL::Debug::Print(1, 6, "palette index %d", paletteIndex);
-
-        SPR_ATTR attr = SPR_ATTRIBUTE( char_spr_id[(int)c],paletteIndex << 8, No_Gouraud, 0 | ECdis | CL16Bnk , FUNC_Texture  );
-
+        SPR_ATTR attr = SPR_ATTRIBUTE( char_spr_id[(int)c],paletteIndex << 4, No_Gouraud, 0 | ECdis | CL16Bnk , FUNC_Texture  );
         SRL::Scene2D::Draw( &attr,points, 500.0);
         
        }
