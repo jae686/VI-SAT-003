@@ -230,6 +230,14 @@ class bitmapfont
         //get the index 
         char c = s[i] - 32;
 
+        //hotfix - no lowercase characters in the font, so we will use the uppercase ones
+        if(c >= ('a' - 32) && c <= ('z' - 32))
+        {
+            //set to uppercase
+            c = c - ('a' - 'A');
+        }
+
+
         //get the texture dimensions
         uint16_t h = SRL::VDP1::Textures[char_spr_id[(int)c]].Height;
         uint16_t w = SRL::VDP1::Textures[char_spr_id[(int)c]].Width;
