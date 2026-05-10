@@ -35,10 +35,10 @@ int main()
     Assets assets;
     assets.loadAssets();
 
-    bitmapfont fonts; 
+    //bitmapfont fonts; 
 
     Scene01 scene01_s = Scene01(&assets);
-
+    SceneCredits sceneCredits_s = SceneCredits(&assets);
     // Frame counter
     uint32_t elapsedTime = 0;
     SRL::Sound::Cdda::Analysis::Start();
@@ -48,25 +48,27 @@ int main()
     fsm::states state = fsm::states::scene01;
 
     bool firstFrame = true;
+    Fxp angle = 0.0;
 
     while (1)
     {     
         state = fsm.getCurrentState(elapsedTime);
-        SRL::Debug::Print(1, 3, "Elapsed Time %d", elapsedTime);
-        // fonts.printChar('Y', 0.0 , 0.0);
-        //fonts.PrintString("TESTE", 5 ,-128, 0);
-        // fonts.PrintString("TESTE", 0 ,0 , 10, 1.0, -45.0);
-        fonts.PrintString("FRANGO", -160 ,0 , 10, 0.5, -45.0);
-       // fonts.PrintString("TESTE",  -60 ,0 , 10, 0.5, -45.0);
-        fonts.PrintString("123456",  0 ,0 , 10, 0.5, 0.0);
-      //  fonts.PrintString("%&QUERT",  60 ,0 , 10, 0.5, -45.0);
-        fonts.PrintString("TOSTA",  -100,-50 , 10, 1, 0.0);
+        SRL::Debug::Print(1, 3, "Elapsed Time %d , Angle %f", elapsedTime, angle);
+        /*
+        assets.fonts.PrintString("X TOSTA", -160.0 ,0.0 , 10, 0.25, -45, 4);
+        assets.fonts.PrintString("X TOSTA", -100.0 ,0.0 , 10, 0.25, -45, 4);
+        assets.fonts.PrintString("X TOSTA", -40.0 ,0.0 , 10, 0.25, -45, 4);
+       */
+       
+        //assets.fonts.PrintString("X TOSTA", -320.0 ,0.0 , 10, 0.5, angle, 4);
+       
+       
         switch(state)
         {
             
             case fsm::states::scene01 : 
-                scene01_s.draw(elapsedTime);
-                //SRL::Debug::Print(1, 3, "Scene 1");
+                //scene01_s.draw(elapsedTime);
+                sceneCredits_s.draw(elapsedTime);
             break;
            
             default : 
@@ -76,6 +78,7 @@ int main()
         }
         SRL::Core::Synchronize(); // Swap buffers and wait for VBlank
         Fxp delta = SRL::Timer::DeltaMilliseconds();
+        
         if(firstFrame)
         {
             firstFrame = !firstFrame;
@@ -84,6 +87,7 @@ int main()
         {
             uint32_t delta_u = delta.As<uint32_t>();
             elapsedTime = elapsedTime + delta_u;
+            angle = angle + delta * 0.1;        
         }
         
     }
