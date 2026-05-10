@@ -40,4 +40,81 @@ class Scene01 : public BaseScene
         }
 };
 
+class SceneCredits : public BaseScene
+{
+    public :
+        // ---- Scene configuration ----
+       
+        // Credits scene, with scrolling text and background animation
+
+        //Text:
+
+        const char* greets[50] = {
+            "abaddon",
+            "accession",
+            "agenda",
+            "alcatraz",
+            "altair",
+            "attention whore",
+            "batman group",
+            "bitshifters",
+            "brain control",
+            "brainlez coders!",
+            "bus error collective",
+            "citavia",
+            "damage",
+            "darklite",
+            "dekadence",
+            "desire",
+            "disaster area",
+            "epoqe",
+            "excess team",
+            "extend",
+            "fairlight"
+            "focus design",
+            "gaia space agency",
+            "haujobb",
+            "horology",
+            "ICUP", 
+            "joker",
+            "jumalauta",
+            "logicoma",
+            "loonies",
+            "mad wizards",
+            "marquee design",
+            "matt current",
+            "mercury",
+            "mfx",
+            "napalm core",
+            "poo-brain",
+            "rebels",
+            "rift",
+            "royal belgian beer squadron",
+            "sensar studios",
+            "slipstream",
+            "smfx",
+            "software failure",
+            "spectrals",
+            "spreadpoint",
+            "teadrinker",
+            "team210",
+            "the black lotus",
+            "the orz",
+            "tpolm"
+        };
+        
+
+        SceneCredits(Assets * s) : BaseScene(s)
+        {
+           
+        }
+
+        void draw(uint32_t elapsed_ms)
+        {          
+                  
+           assets->fonts.PrintString("CREDITS", -160 , 0 , 10, 0.25, -45, 4);
+
+        }
+};
+
 
