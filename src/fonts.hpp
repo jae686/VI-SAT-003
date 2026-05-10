@@ -244,8 +244,8 @@ class bitmapfont
         
         //set a quad at the center, with the size of the quad
         
-        Fxp h2 = Fxp::Convert(h/2);
-        Fxp w2 = Fxp::Convert(w/2);
+        Fxp h2 = Fxp::Convert(h/2) * scale;
+        Fxp w2 = Fxp::Convert(w/2) * scale;
 
 
         points[0] = Vector2D(-w2, -h2);
@@ -254,7 +254,7 @@ class bitmapfont
         points[3] = Vector2D(-w2,  h2);
    
         //Matrix33 transforms =  transformR *  translationM(cursor.X,cursor.Y) * transformS * translationM(x,y);     
-        Matrix33 transforms = translationM(x,y) * transformR * translationM(cursor.X,cursor.Y) *  transformS ; 
+        Matrix33 transforms =  translationM(x,y)  * transformR  * translationM(cursor.X,cursor.Y) /* transformS*/  ; 
 
         Vector3D vec3_points[4] = {Vector3D(0.0)};
         vec3_points[0] = Vector3D(points[0], 1.0);
@@ -275,7 +275,7 @@ class bitmapfont
         }
         
         //update the cursor position for the next iteration
-        cursor.X = cursor.X + spacing + Fxp::Convert(w);
+        cursor.X = cursor.X + spacing + (Fxp::Convert(w) * scale);
        
         uint16_t selectedPalette = paletteSelect >= 0 ? paletteSelect % numberOfPalettes : i % numberOfPalettes; 
       
