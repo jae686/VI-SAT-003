@@ -1,7 +1,7 @@
 #pragma once
 #include <srl.hpp>
 #include <vector>
-
+#include "loader.hpp"
 
 // Using to shorten names for Vector and HighColor
 using namespace SRL::Types;
@@ -127,7 +127,7 @@ class bitmapfont
         colors[15] = HighColor::Colors::Yellow; //
      
        
-
+        
         
         for(int i = 0; i < numberOfPalettes; i++)
         {
@@ -162,6 +162,8 @@ class bitmapfont
              SRL::Debug::AssertScreen("SRL::Cd::ChangeDir error %d", "fonts.hpp" ,  "bitmapfont()" , res);
         }
 
+        Loader l = Loader(95);
+
        for(int i = 0 ; i < 95 ; i++) // 127 - 32 = 95
         {
             SRL::Debug::PrintClearLine(4);
@@ -181,6 +183,7 @@ class bitmapfont
                 SRL::Debug::Print(1, 4, "File %s not found, using space as fallback", filename);
             }
 
+            l.drawLoadingBarAnim(i);
             SRL::Debug::Print(1, 5, "Free mem %d ", SRL::VDP1::GetAvailableMemory());
 
         }
@@ -242,7 +245,8 @@ class bitmapfont
         points[2] = Vector2D( w2,  h2);
         points[3] = Vector2D(-w2,  h2);
    
-        Matrix33 transforms =  transformR *  translationM(cursor.X,cursor.Y) * transformS * translationM(x,y);     
+        //Matrix33 transforms =  transformR *  translationM(cursor.X,cursor.Y) * transformS * translationM(x,y);     
+        Matrix33 transforms = translationM(x,y) * transformR * translationM(cursor.X,cursor.Y) *  transformS ; 
 
         Vector3D vec3_points[4] = {Vector3D(0.0)};
         vec3_points[0] = Vector3D(points[0], 1.0);
@@ -267,7 +271,7 @@ class bitmapfont
        
         uint16_t selectedPalette = paletteSelect >= 0 ? paletteSelect % numberOfPalettes : i % numberOfPalettes; 
       
-        uint16_t paletteIndex =  palettes[i % numberOfPalettes].GetId(); 
+        uint16_t paletteIndex =  palettes[selectedPalette].GetId(); 
         SRL::Debug::Print(1, 6, "palette index %d", paletteIndex);
         SPR_ATTR attr = SPR_ATTRIBUTE( char_spr_id[(int)c], paletteIndex << 4, No_Gouraud, 0 | ECdis | CL16Bnk , FUNC_Texture  );
         SRL::Scene2D::Draw( &attr,points, 500.0);
