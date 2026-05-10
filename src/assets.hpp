@@ -4,10 +4,7 @@
 
 #include "modelObject.hpp"
 #include "loader.hpp"
-
-
-
-
+#include "fonts.hpp"
 
 
 
@@ -24,16 +21,23 @@ class Assets : public BaseAssets
 
     // holds the demo assets
 
+
+
     std::vector<int32_t> texturePool;
       
     int32_t counters[7] = {0}; // to use for precistent data beetween frames
     SRL::Math::Types::Angle angles[6] = {0};
     Fxp floats[7] = {0};
 
+    bitmapfont fonts;
+
     void loadAssets()
     {
         SRL::Debug::Print(16, 28, "VI-SAT 03 Party Version");
-        Loader l = Loader(1);    
+
+        Loader l = Loader(1);
+
+        //fonts = bitmapfont();
         SRL::Debug::PrintClearScreen();
     };
 
