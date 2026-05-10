@@ -13,7 +13,7 @@ class fsm
                                                 fsm::states::end
                                              };
 
-        std::vector<uint32_t> sceneMsTimes = {32000 , 32000};
+        std::vector<uint32_t> sceneMsTimes = {64000 , 32000};
 
         std::vector<uint32_t> sceneMsTimesAccum = {};
         
