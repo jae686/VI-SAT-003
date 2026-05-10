@@ -111,10 +111,22 @@ class SceneCredits : public BaseScene
 
         void draw(uint32_t elapsed_ms)
         {          
-                  
-           assets->fonts.PrintString("CREDITS", -160 , 0 , 10, 0.25, -45, 4);
+           //print greets with scrolling effect
+            int scroll_speed = 30; //pixels per second
+            int y_offset = (elapsed_ms * scroll_speed) / 1000; //calculate vertical offset based on elapsed time and scroll speed
+
+            for(int i = 0; i < 50; i++)
+            {
+                int x = (i * 35) - 160; //position each line with spacing and apply vertical offset, starting from the bottom of the screen
+               // assets->fonts.PrintString(greets[i], Fxp::Convert(x) , 0 , 10, 0.2, -45, 4);
+                
+                if(x > -160 && x < 160) //only print lines that are within the screen
+                {
+                     assets->fonts.PrintString(greets[i], Fxp::Convert(x) , 0 , 10, 0.2, -45, 4);
+                }
+            
+            }
+    
 
         }
 };
-
-
