@@ -242,10 +242,17 @@ class bitmapfont
         uint16_t h = SRL::VDP1::Textures[char_spr_id[(int)c]].Height;
         uint16_t w = SRL::VDP1::Textures[char_spr_id[(int)c]].Width;
         
+        // calculate aspect ratio to maintain it during scaling
+        Fxp aspectRatio = Fxp::Convert(w) / Fxp::Convert(h);
+
+        //set the height based on the scale
+        Fxp h_scaled = Fxp(32.0) * scale;
+        Fxp w_scaled = h_scaled / aspectRatio; // maintain aspect ratio        
+
         //set a quad at the center, with the size of the quad
         
-        Fxp h2 = Fxp::Convert(h/2) * scale;
-        Fxp w2 = Fxp::Convert(w/2) * scale;
+        Fxp h2 = (h_scaled/2) * scale;
+        Fxp w2 = (w_scaled/2) * scale;
 
 
         points[0] = Vector2D(-w2, -h2);
@@ -274,8 +281,20 @@ class bitmapfont
             points[j].Y = vec3_points[j].Y;
         }
         
+        
+        //if character is inside the screen, draw it
+        bool insideScreen = points[0].X > -160 && points[0].X < 160 && points[0].Y > -120 && points[0].Y < 120 || 
+                            points[1].X > -160 && points[1].X < 160 && points[1].Y > -120 && points[1].Y < 120 ||
+                            points[2].X > -160 && points[2].X < 160 && points[2].Y > -120 && points[2].Y < 120 ||
+                            points[3].X > -160 && points[3].X < 160 && points[3].Y > -120 && points[3].Y < 120;
+
+
+
+        if(insideScreen)
+        {   
+
         //update the cursor position for the next iteration
-        cursor.X = cursor.X + spacing + (Fxp::Convert(w) * scale);
+        cursor.X = cursor.X + spacing + w_scaled ; // add character width and spacing to cursor position for the next character
        
         uint16_t selectedPalette = paletteSelect >= 0 ? paletteSelect % numberOfPalettes : i % numberOfPalettes; 
       
@@ -287,7 +306,7 @@ class bitmapfont
        }
 
     }
-
+    }
     
 
 };
