@@ -10,13 +10,25 @@
 class BaseScene
 {
     public :
-        virtual void draw(uint32_t elapsed_ms); //
-        uint16_t duration_frames = 0; //how many frames does the scene last (to be changed for time when frame time is available in SRL)
+        virtual void draw(uint32_t elapsed_ms)
+        {
+            if(fistFrame)
+            {
+                //one time events here
+                fistFrame = false;
+                //set start time for the scene
+                starts_at = elapsed_ms;
+            }
+        }
+       
         Assets * assets = nullptr;
-        
-        BaseScene(Assets * s)
+        uint32_t starts_at = 0; // used to calculate the local scene time by substracting it from the global elapsed time
+        bool fistFrame = true; // used to trigger one-time events at the start of the scene
+
+        BaseScene(Assets * s, uint32_t starts_at = 0)
         {
             this->assets = s;
+            this->starts_at = starts_at;
         }       
 };
 
@@ -34,7 +46,7 @@ class Scene01 : public BaseScene
 
         void draw(uint32_t elapsed_ms)
         {          
-   
+            
             // Rotated rectangle points       
             Vector3D point = Vector3D(0.0 , 0.0, 500.0);   
         }
@@ -117,12 +129,12 @@ class SceneCredits : public BaseScene
 
             for(int i = 0; i < 50; i++)
             {
-                int x = (i * 35) - 160; //position each line with spacing and apply vertical offset, starting from the bottom of the screen
+                int x = (i * 25) - 1400 + y_offset; //position each line with spacing and apply vertical offset, starting from the bottom of the screen
                // assets->fonts.PrintString(greets[i], Fxp::Convert(x) , 0 , 10, 0.2, -45, 4);
                 
-                if(x > -160 && x < 160) //only print lines that are within the screen
+                if(x > -240 && x < 160) //only print lines that are within the screen
                 {
-                     assets->fonts.PrintString(greets[i], Fxp::Convert(x) , 0 , 10, 0.2, -45, 4);
+                     assets->fonts.PrintString(greets[i], Fxp::Convert(x) , 100 , 0.0, 0.7, -45, 4);
                 }
             
             }
