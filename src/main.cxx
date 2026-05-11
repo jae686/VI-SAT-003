@@ -53,15 +53,16 @@ int main()
     while (1)
     {     
         state = fsm.getCurrentState(elapsedTime);
-        SRL::Debug::Print(1, 3, "Elapsed Time %d , Angle %f", elapsedTime, angle);
+       
         /*
         assets.fonts.PrintString("X TOSTA", -160.0 ,0.0 , 10, 0.25, -45, 4);
         assets.fonts.PrintString("X TOSTA", -100.0 ,0.0 , 10, 0.25, -45, 4);
         assets.fonts.PrintString("X TOSTA", -40.0 ,0.0 , 10, 0.25, -45, 4);
+        
+       
+        assets.fonts.PrintString("X TOSTA", 0.0 ,0.0 , 0.0, 1.0, 0, 5);
+        assets.fonts.PrintString("X TOSTA", 0.0 ,0.0 , 0.0, 0.5, 0, 5);
        */
-       
-        //assets.fonts.PrintString("X TOSTA", -320.0 ,0.0 , 10, 0.5, angle, 4);
-       
        
         switch(state)
         {
@@ -75,10 +76,11 @@ int main()
                 SRL::Sound::Cdda::StopPause(); 
                 SRL::Debug::PrintClearScreen();
                 SRL::Debug::Print(2, 3, "END");
+            break;
         }
         SRL::Core::Synchronize(); // Swap buffers and wait for VBlank
         Fxp delta = SRL::Timer::DeltaMilliseconds();
-        
+        SRL::Debug::Print(1, 3, "Elapsed Time %d , Delta %f", elapsedTime, delta);
         if(firstFrame)
         {
             firstFrame = !firstFrame;
