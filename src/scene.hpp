@@ -19,10 +19,13 @@ class BaseScene
                 //set start time for the scene
                 starts_at = elapsed_ms;
             }
+            //calculate local time for the scene by subtracting the start time from the global elapsed time
+            local_time = elapsed_ms - starts_at;
         }
        
         Assets * assets = nullptr;
         uint32_t starts_at = 0; // used to calculate the local scene time by substracting it from the global elapsed time
+        uint32_t local_time = 0; // calculated by substracting starts_at from the global elapsed time, can be used for timing events within the scene
         bool fistFrame = true; // used to trigger one-time events at the start of the scene
 
         BaseScene(Assets * s, uint32_t starts_at = 0)
