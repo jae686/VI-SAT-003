@@ -35,8 +35,7 @@ int main()
     Assets assets;
     assets.loadAssets();
 
-    //bitmapfont fonts; 
-
+  
     Scene01 scene01_s = Scene01(&assets);
     SceneCredits sceneCredits_s = SceneCredits(&assets);
     // Frame counter
@@ -44,11 +43,17 @@ int main()
     SRL::Sound::Cdda::Analysis::Start();
     SRL::Sound::Cdda::SetVolume(4);
     SRL::Sound::Cdda::PlaySingle(2,true);
+    SRL::Sound::Cdda::Analysis::GetTotalVolume();
 
     fsm::states state = fsm::states::scene01;
 
     bool firstFrame = true;
     Fxp angle = 0.0;
+
+    Fxp MusicBPM = 137.0;
+    Fxp beatDuration = 60000.0 / MusicBPM; // Duration of one beat in milliseconds
+
+    assets.counters[1] = beatDuration.As<uint32_t>(); // Store beat duration in counters[1] for use in scenes
 
     while (1)
     {     
@@ -63,6 +68,8 @@ int main()
         assets.fonts.PrintString("X TOSTA", 0.0 ,0.0 , 0.0, 1.0, 0, 5);
         assets.fonts.PrintString("X TOSTA", 0.0 ,0.0 , 0.0, 0.5, 0, 5);
        */
+
+       
        
         switch(state)
         {
@@ -81,6 +88,7 @@ int main()
         SRL::Core::Synchronize(); // Swap buffers and wait for VBlank
         Fxp delta = SRL::Timer::DeltaMilliseconds();
         SRL::Debug::Print(1, 3, "Elapsed Time %d , Delta %f", elapsedTime, delta);
+        //SRL::Debug::Print(1, 4, "60000//BPM: %d", assets.counters[1]);
         if(firstFrame)
         {
             firstFrame = !firstFrame;

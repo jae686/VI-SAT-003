@@ -20,14 +20,13 @@ class Assets : public BaseAssets
     public :
 
     // holds the demo assets
-
-
-
     std::vector<int32_t> texturePool;
       
-    int32_t counters[7] = {0}; // to use for precistent data beetween frames
+    int32_t counters[7] = {0}; // to use for persistent data between frames index 0 - 0 : credits scene background is disabled, 1 otherwise
     SRL::Math::Types::Angle angles[6] = {0};
     Fxp floats[7] = {0};
+
+    ModelObject cube_w;
 
     bitmapfont fonts;
 
@@ -35,12 +34,24 @@ class Assets : public BaseAssets
     {
         SRL::Debug::Print(16, 28, "VI-SAT 03 Party Version");
 
-        Loader l = Loader(1);
-
-        //fonts = bitmapfont();
+        Loader l = Loader(2);
+        //load a background image to NBG0
+       // loadImgtoTilemapNGB0("SPLASH1.TGA");
+        loadTilemapNGB0("SPLASH1.BIN");
+        l.drawLoadingBarAnim(1);
+        int32_t res = SRL::Cd::ChangeDir("NYA");	
+        cube_w = ModelObject("CUBE_W.NYA");
+        SRL::Cd::ChangeDir((char*) 0);
+        l.drawLoadingBarAnim(2);
         SRL::Debug::PrintClearScreen();
     };
 
+    void loadTilemapNGB0(char* filename)
+    {
+        auto tile = new SRL::Tilemap::Interfaces::CubeTile(filename);     // load the tilemap into main ram
+        SRL::VDP2::NBG0::LoadTilemap(*tile);                                    // load tilemap into NGB0
+        delete tile;                                                            // free the tilemap copy in main ramm
+    }
     void loadImgtoTilemapNGB0(char* filename)
     {
         SRL::Bitmap::TGA* logo = new SRL::Bitmap::TGA(filename);//Load Bitmap image to work RAM
