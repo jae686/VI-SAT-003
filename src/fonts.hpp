@@ -171,7 +171,7 @@ class bitmapfont
             char filename[13] = {0};
             snprintf(filename, 13, "%d.TGA", i + 32);
             bool exists = SRL::Cd::File(filename).Exists();
-            SRL::Debug::Print(1, 5, "File %s exists ? %d", filename, exists);
+         //   SRL::Debug::Print(1, 5, "File %s exists ? %d", filename, exists);
             if(exists)
             {
                 SRL::Debug::Print(1, 4, "Loading %s", filename);
@@ -184,10 +184,9 @@ class bitmapfont
             }
 
             l.drawLoadingBarAnim(i);
-            SRL::Debug::Print(1, 5, "Free mem %d ", SRL::VDP1::GetAvailableMemory());
 
         }
-               
+        SRL::Debug::PrintClearScreen();    
         SRL::Cd::ChangeDir((char*) 0);
     }
 
@@ -212,6 +211,105 @@ class bitmapfont
 
     void PrintString(const char* s, Fxp x, Fxp y, Fxp spacing, Fxp scale, Fxp angle, uint16_t paletteSelect = -1)
     {       
+       Vector2D cursor = Vector2D(0,0);
+       Vector2D points[4] = {Vector2D(0.0)};
+       
+       Matrix33 transformR = Matrix33::Identity();
+       transformR = transformR.CreateRotationZ(Angle::FromDegrees(angle));
+
+       Matrix33 transformT = translationM(x,y);
+
+       Matrix33 transformS = Matrix33::Identity();
+       transformS = transformS.CreateScale(Vector3D(scale));
+      
+       for(int i = 0 ; s[i] != 0 ; i++)
+       {
+
+        //determine character size
+        //get the index 
+        char c = s[i] - 32;
+
+        //hotfix - no lowercase characters in the font, so we will use the uppercase ones
+        if(c >= ('a' - 32) && c <= ('z' - 32))
+        {
+            //set to uppercase
+            c = c - ('a' - 'A');
+        }
+
+
+        //get the texture dimensions
+        uint16_t h = SRL::VDP1::Textures[char_spr_id[(int)c]].Height;
+        uint16_t w = SRL::VDP1::Textures[char_spr_id[(int)c]].Width;
+        
+        // calculate aspect ratio to maintain it during scaling
+        Fxp aspectRatio = Fxp::Convert(w) / Fxp::Convert(h);
+
+        //set the height based on the scale
+        Fxp h_scaled = Fxp(32.0) * scale;
+        Fxp w_scaled = h_scaled / aspectRatio; // maintain aspect ratio        
+
+        //set a quad at the center, with the size of the quad
+        
+        Fxp h2 = (h_scaled/2) * scale;
+        Fxp w2 = (w_scaled/2) * scale;
+
+
+        points[0] = Vector2D(-w2, -h2);
+        points[1] = Vector2D(w2,  -h2);
+        points[2] = Vector2D( w2,  h2);
+        points[3] = Vector2D(-w2,  h2);
+   
+        //Matrix33 transforms =  transformR *  translationM(cursor.X,cursor.Y) * transformS * translationM(x,y);     
+        Matrix33 transforms =  translationM(x,y)  * transformR  * translationM(cursor.X,cursor.Y) /* transformS*/  ; 
+
+        Vector3D vec3_points[4] = {Vector3D(0.0)};
+        vec3_points[0] = Vector3D(points[0], 1.0);
+        vec3_points[1] = Vector3D(points[1], 1.0);
+        vec3_points[2] = Vector3D(points[2], 1.0);
+        vec3_points[3] = Vector3D(points[3], 1.0);
+
+       
+        //transform the points
+
+        for(int j = 0 ; j < 4 ; j++)
+        {
+            //multiply vector by our rotation matrix
+            vec3_points[j] = transforms *  vec3_points[j];
+            // get back to vector2D type that  SRL::Scene2D::DrawSprite accepts
+            points[j].X = vec3_points[j].X;
+            points[j].Y = vec3_points[j].Y;
+        }
+        
+        
+        //if character is inside the screen, draw it
+        bool insideScreen = points[0].X > -160 && points[0].X < 160 && points[0].Y > -120 && points[0].Y < 120 || 
+                            points[1].X > -160 && points[1].X < 160 && points[1].Y > -120 && points[1].Y < 120 ||
+                            points[2].X > -160 && points[2].X < 160 && points[2].Y > -120 && points[2].Y < 120 ||
+                            points[3].X > -160 && points[3].X < 160 && points[3].Y > -120 && points[3].Y < 120;
+
+
+
+        if(insideScreen)
+        {   
+
+        //update the cursor position for the next iteration
+        cursor.X = cursor.X + spacing + w_scaled ; // add character width and spacing to cursor position for the next character
+       
+        uint16_t selectedPalette = paletteSelect >= 0 ? paletteSelect % numberOfPalettes : i % numberOfPalettes; 
+      
+        uint16_t paletteIndex =  palettes[selectedPalette].GetId(); 
+      //  SRL::Debug::Print(1, 6, "palette index %d", paletteIndex);
+        SPR_ATTR attr = SPR_ATTRIBUTE( char_spr_id[(int)c], paletteIndex << 4, No_Gouraud, 0 | ECdis | CL16Bnk , FUNC_Texture  );
+        SRL::Scene2D::Draw( &attr,points, 500.0);
+        
+       }
+
+    }
+    }
+
+    void PrintStringSin(const char* s, Fxp x, Fxp y, Fxp spacing, Fxp scale, Fxp angle, uint16_t paletteSelect = -1)
+    {       
+       // finish later
        Vector2D cursor = Vector2D(0,0);
        Vector2D points[4] = {Vector2D(0.0)};
        

@@ -37,6 +37,8 @@ int main()
 
   
     Scene01 scene01_s = Scene01(&assets);
+    Scene02 scene02_s = Scene02(&assets);
+    Scene03 scene03_s = Scene03(&assets);
     SceneCredits sceneCredits_s = SceneCredits(&assets);
     // Frame counter
     uint32_t elapsedTime = 0;
@@ -54,40 +56,44 @@ int main()
     Fxp beatDuration = 60000.0 / MusicBPM; // Duration of one beat in milliseconds
 
     assets.counters[1] = beatDuration.As<uint32_t>(); // Store beat duration in counters[1] for use in scenes
+    assets.counters[2] = assets.counters[1] + 7000; // time for next beat
 
+  //  SRL::VDP2::SetBackColor(HighColor::Colors::Blue);
+    SRL::Scene3D::SetDepthDisplayLevel(4);
+    SRL::Debug::PrintClearScreen();
     while (1)
     {     
         state = fsm.getCurrentState(elapsedTime);
-       
-        /*
-        assets.fonts.PrintString("X TOSTA", -160.0 ,0.0 , 10, 0.25, -45, 4);
-        assets.fonts.PrintString("X TOSTA", -100.0 ,0.0 , 10, 0.25, -45, 4);
-        assets.fonts.PrintString("X TOSTA", -40.0 ,0.0 , 10, 0.25, -45, 4);
-        
-       
-        assets.fonts.PrintString("X TOSTA", 0.0 ,0.0 , 0.0, 1.0, 0, 5);
-        assets.fonts.PrintString("X TOSTA", 0.0 ,0.0 , 0.0, 0.5, 0, 5);
-       */
-
-       
-       
+         
         switch(state)
         {
             
             case fsm::states::scene01 : 
-                //scene01_s.draw(elapsedTime);
+                scene01_s.draw(elapsedTime);
+            break;
+            case fsm::states::scene02 : 
+                scene02_s.draw(elapsedTime);
+            break;
+            case fsm::states::scene03 : 
+                scene03_s.draw(elapsedTime);
+            break;
+            case fsm::states::end : 
                 sceneCredits_s.draw(elapsedTime);
             break;
            
             default : 
                 SRL::Sound::Cdda::StopPause(); 
                 SRL::Debug::PrintClearScreen();
-                SRL::Debug::Print(2, 3, "END");
+                SRL::Debug::Print(2, 3, "PARTY VERSION NOT FINAL");
+                SRL::Debug::Print(2, 4, "Code Jae686//Vollumetric Illusions");
+                SRL::Debug::Print(2, 5, "Sound, Gfx EviL//Accession");
+                SRL::Debug::Print(2, 6, "Released at outline 2026");
+                SRL::Debug::Print(2, 8, "END");
             break;
         }
         SRL::Core::Synchronize(); // Swap buffers and wait for VBlank
         Fxp delta = SRL::Timer::DeltaMilliseconds();
-        SRL::Debug::Print(1, 3, "Elapsed Time %d , Delta %f", elapsedTime, delta);
+       // SRL::Debug::Print(1, 3, "Elapsed Time %d , Delta %f", elapsedTime, delta);
         //SRL::Debug::Print(1, 4, "60000//BPM: %d", assets.counters[1]);
         if(firstFrame)
         {

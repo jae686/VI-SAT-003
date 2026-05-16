@@ -117,7 +117,10 @@ class Loader
         }
             //SRL::Debug::Print(1, 2, "drawBar == false");
         
-        SRL::Debug::Print(1,3, "free space %d" , SRL::Memory::HighWorkRam::GetFreeSpace());
+            SRL::Debug::PrintClearLine(5);
+            SRL::Debug::PrintClearLine(6);
+            SRL::Debug::Print(1, 5, "Free VDP1 mem %d ", SRL::VDP1::GetAvailableMemory());
+            SRL::Debug::Print(1, 6, "free HighWorkRam space %d" , SRL::Memory::HighWorkRam::GetFreeSpace());
 
         return true;
     }

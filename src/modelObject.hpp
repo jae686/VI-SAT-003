@@ -422,7 +422,7 @@ public:
         {
             delete[] (SRL::Types::SmoothMesh*)this->meshes;
         }
-
+        SRL::Debug::AssertScreen("Destructor called on modelObject", "ModelObject.hpp" , "~ModelObject");
         this->meshCount = 0;
     }
 
