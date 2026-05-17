@@ -13,9 +13,9 @@ class fsm
                                                 fsm::states::end
                                              };
         // total run time 157000 mses
-        //std::vector<uint32_t> sceneMsTimes = {25 , 36660, 68340, 52000}; //test
+        std::vector<uint32_t> sceneMsTimes = {25 , 36660, 0, 52000}; //test
        // std::vector<uint32_t> sceneMsTimes = {28340 , 36660, 68340, 52000}; //final
-        std::vector<uint32_t> sceneMsTimes = {28340 , 36660, 0, 52000}; // party
+       // std::vector<uint32_t> sceneMsTimes = {28340 , 36660, 0, 52000}; // party version
 
         std::vector<uint32_t> sceneMsTimesAccum = {};
         
