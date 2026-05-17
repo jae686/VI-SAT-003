@@ -12,7 +12,7 @@ Will probably get a final version next year.
 ## NFO
 
 
-Name : VI-SAT 03
+Name : VI-SAT 003
 
 Version : 0.9 (Party Version)
 
@@ -20,9 +20,9 @@ Release Date : 16/05/2026
 
 Released at : [Outline Demoparty](https://demozoo.org/parties/5471/)
 
-Code , 3D  : Jae686 / Vollumetric Illusions
+Code , 3D  : [Jae686](https://demozoo.org/sceners/34933/) / Vollumetric Illusions
 
-Music, Misc 2D : Evil / Accension
+Music, Misc 2D : [Evil](https://demozoo.org/sceners/5794/) / Accension
 
 Tools : Saturn Ring Library (https://srl.reye.me/index.html)
 
