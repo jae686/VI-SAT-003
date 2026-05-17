@@ -187,7 +187,7 @@ class Scene02 : public BaseScene
             SRL::Scene3D::LookAt(cameraLocation, Vector3D(), Angle::FromDegrees(0.0));
             
             //   effect.compositeDrawing(&assets->cuberf, Vector3D(2.0), &assets->cuberw, Vector3D(5.0) );
-            if(this->local_time < 24000)
+            if(this->local_time < 23000)
             {
                 effect.drawGridWave(&assets->cuberf,gridPosition, 7 , 25 , Fxp(5.0) ,0.03 ,0.05, internal_cnt);
                 gridPosition.X = gridPosition.X - (gridScrollSpeed * this->local_time);
@@ -197,7 +197,7 @@ class Scene02 : public BaseScene
                 assets->cuberw.Draw();
 
                 int scroll_speed = 25; //pixels per second
-                int y_offset = ((this->local_time - 24000) * scroll_speed) / 1000; //calculate vertical offset based on elapsed time and scroll speed
+                int y_offset = ((this->local_time - 23000) * scroll_speed) / 1000; //calculate vertical offset based on elapsed time and scroll speed
 
                 
                 
