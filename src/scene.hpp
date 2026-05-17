@@ -186,7 +186,7 @@ class Scene02 : public BaseScene
             // Set camera location and direction
             SRL::Scene3D::LookAt(cameraLocation, Vector3D(), Angle::FromDegrees(0.0));
             
-         //   effect.compositeDrawing(&assets->cuberf, Vector3D(2.0), &assets->cuberw, Vector3D(5.0) );
+            //   effect.compositeDrawing(&assets->cuberf, Vector3D(2.0), &assets->cuberw, Vector3D(5.0) );
             if(this->local_time < 24000)
             {
                 effect.drawGridWave(&assets->cuberf,gridPosition, 7 , 25 , Fxp(5.0) ,0.03 ,0.05, internal_cnt);
@@ -199,14 +199,16 @@ class Scene02 : public BaseScene
                 int scroll_speed = 25; //pixels per second
                 int y_offset = ((this->local_time - 24000) * scroll_speed) / 1000; //calculate vertical offset based on elapsed time and scroll speed
 
-                //for(int i = 0; i < 9; i++)
-                for(int i = 8; i >= 0 ; i--)
+                
+                
+                for(int i = 0; i < 9; i++)
                 {
-                    int y = (i * 25) - (16*9) + y_offset; //position each line with spacing and apply vertical offset, starting from the bottom of the screen
-                                    
+                    int y = (i * 25) + (16*9) - y_offset; //position each line with spacing and apply vertical offset, starting from the bottom of the screen
+                    
                     if(y > -240 && y < 160) //only print lines that are within the screen
                     {
-                        assets->fonts.PrintString(textUPPER[i], -120, Fxp::Convert(y) , 0.0, Fxp(0.7) + (scale_f * 0.001), 0, 0);
+                        assets->fonts.PrintString(textUPPER[i], -140, Fxp::Convert(y) , 0.0, Fxp(0.6) + (scale_f * 0.001), 0, 0);
+                        SRL::Debug::Print(1,1,"y : %d , y_offset : %d", y, y_offset);
                     }
                 
                 }
