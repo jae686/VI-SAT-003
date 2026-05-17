@@ -30,6 +30,10 @@ Tools : Saturn Ring Library (https://srl.reye.me/index.html)
 
 Special Thanks :
 
-* ReyMe @ SegaXtreme Discord
+* ReyeMe @ SegaXtreme Discord
 * Danny @ SegaXtreme Discord
+* 7Shades @ SegaXtreme Discord
+* Emerald Nova @ SegaXtreme Discord
+* Hassmaschine @ SegaXtreme Discord
+* willl and nemesis8811 @ SegaXtreme Discord
 * [SegaXtreme](https://segaxtreme.net/) [Discord](https://discord.gg/X3Tw3B2)
