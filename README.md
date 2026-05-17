@@ -24,9 +24,9 @@ Released at : [Outline Demoparty](https://demozoo.org/parties/5471/)
 
 Code , 3D  : [Jae686](https://demozoo.org/sceners/34933/) / Volumetric Illusions
 
-Music, Misc 2D : [Evil](https://demozoo.org/sceners/5794/) / Accension
+Music, Misc 2D : [EviL](https://demozoo.org/sceners/5794/) / Accension
 
-Tools : Saturn Ring Library (https://srl.reye.me/index.html)
+Tools : [Saturn Ring Library](https://github.com/ReyeMe/SaturnRingLib)
 
 Special Thanks :
 
