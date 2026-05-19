@@ -23,7 +23,6 @@ class fsm
     
         fsm()
         {
-           // SRL::Debug::Print(1, 1, "FSM Constructor");
             uint32_t accum = 0;
             for(auto i : this->sceneMsTimes)
             {

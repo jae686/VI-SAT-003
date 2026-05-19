@@ -34,9 +34,7 @@ class BaseScene
             {
                  SRL::Debug::AssertScreen("BaseScene error %d", "scene.hpp" ,  "Basescene()" , s);
             }
-            
             this->assets = s;
-
         }       
 };
 
@@ -52,7 +50,7 @@ class Scene01 : public BaseScene
        effects effect;
         Scene01(Assets * s) : BaseScene(s)
         {
-           //teste.LoadFile("CUBE_Z.NYA");
+           
         }
 
         void draw(uint32_t elapsed_ms)
@@ -67,12 +65,7 @@ class Scene01 : public BaseScene
             }
             
             this->local_time = elapsed_ms - this->starts_at;
-/*
-            SRL::Debug::PrintClearLine(1);
-            SRL::Debug::PrintClearLine(4);
-            SRL::Debug::Print(1,1, "Scene : 01");
-            SRL::Debug::Print(1, 4, "Local Time: %d", this->local_time);
-            */
+
             // camera setup
             Vector3D cameraLocation =  Vector3D(25.5, -25.5, 25.5);
             
@@ -114,23 +107,13 @@ class Scene01 : public BaseScene
                 SRL::Scene3D::PopMatrix();
 
             }
-            
-            
-            
-            
+                       
             if(/*elapsed_ms - 114 >= assets->counters[2]*/ scale_f > 0.6 )
             {
                 indexDots++;
                 assets->counters[2] =  assets->counters[2] +  assets->counters[1];
             }
-            
-         /*
-            SRL::Debug::PrintClearLine(5);
-            SRL::Debug::PrintClearLine(6);
-            SRL::Debug::Print(1, 5, "Free VDP1 mem %d ", SRL::VDP1::GetAvailableMemory());
-            SRL::Debug::Print(1, 6, "free HighWorkRam space %d" , SRL::Memory::HighWorkRam::GetFreeSpace());
-        */
-            
+     
         }
 };
 
@@ -166,12 +149,6 @@ class Scene02 : public BaseScene
             
             this->local_time = elapsed_ms - this->starts_at;
 
-           
-         //   SRL::Debug::PrintClearLine(1);
-         //   SRL::Debug::PrintClearLine(4);
-          //    SRL::Debug::Print(1,1, "Scene : 02");
-          //    SRL::Debug::Print(1, 4, "Local Time: %d", this->local_time);
-
             const auto volume = SRL::Sound::Cdda::Analysis::GetTotalVolume();
             const auto scale_f = Fxp::BuildRaw(volume.RightChannel << 5) / 7.0;
 
@@ -186,7 +163,7 @@ class Scene02 : public BaseScene
             // Set camera location and direction
             SRL::Scene3D::LookAt(cameraLocation, Vector3D(), Angle::FromDegrees(0.0));
             
-            //   effect.compositeDrawing(&assets->cuberf, Vector3D(2.0), &assets->cuberw, Vector3D(5.0) );
+            //effect.compositeDrawing(&assets->cuberf, Vector3D(2.0), &assets->cuberw, Vector3D(5.0) );
             if(this->local_time < 23000)
             {
                 effect.drawGridWave(&assets->cuberf,gridPosition, 7 , 25 , Fxp(5.0) ,0.03 ,0.05, internal_cnt);
@@ -199,8 +176,6 @@ class Scene02 : public BaseScene
                 int scroll_speed = 25; //pixels per second
                 int y_offset = ((this->local_time - 23000) * scroll_speed) / 1000; //calculate vertical offset based on elapsed time and scroll speed
 
-                
-                
                 for(int i = 0; i < 9; i++)
                 {
                     int y = (i * 25) + (16*9) - y_offset; //position each line with spacing and apply vertical offset, starting from the bottom of the screen
@@ -221,10 +196,6 @@ class Scene02 : public BaseScene
             {
                 indexTex++; 
             }
-            
-            //assets->fonts.PrintString(textUPPER[0], -120,     -60, 1, 0.5, 0, 0);
-           // assets->fonts.PrintString(textUPPER[1], -120, -60 -16, 1, 0.5, 0, 0);
-
         }
 };
 
@@ -251,13 +222,6 @@ class Scene03 : public BaseScene
             }
             
             this->local_time = elapsed_ms - this->starts_at;
-
-            //print greets with scrolling effect
-        //    SRL::Debug::PrintClearLine(1);
-        //    SRL::Debug::PrintClearLine(4);
-        //    SRL::Debug::Print(1, 1, "Scene : 03");
-        //    SRL::Debug::Print(1, 4, "Local Time: %d", this->local_time);
-
             SRL::Scene2D::DrawSprite(assets->texturePool[2], Vector3D(-160.0,-120,500),Vector3D(1.0), SRL::Scene2D::UpperLeft);
         }
 };
@@ -345,29 +309,11 @@ class SceneCredits : public BaseScene
             }
             
             this->local_time = elapsed_ms - this->starts_at;
-
-           /* 
-            if(assets->counters[0] == 0)
-            {
-                //one time events here
-                assets->counters[0] = 1; // set to 1 to indicate that the one-time events have been executed
-                SRL::VDP2::NBG2::SetPriority(SRL::VDP2::Priority::Layer7);//set NBG2 priority
-                SRL::VDP2::NBG2::ScrollEnable();//enable display of NBG2
-                Vector2D offset = Vector2D(0.0, 0.0);
-                SRL::VDP2::NBG2::SetPosition(offset);
-            }*/
-            
-            //print greets with scrolling effect
-         //   SRL::Debug::PrintClearLine(1);
-         //   SRL::Debug::PrintClearLine(4);
-         //   SRL::Debug::Print(1,1, "Scene : Credits");
-         //   SRL::Debug::Print(1, 4, "Local Time: %d", this->local_time);
             Vector3D cameraLocation = Vector3D(12.5, -12.5, 12.5);
   
             // Setup light, we can use scale of the vector to manipulate light intensity
             Vector3D lightDirection = Vector3D(0.2, 0.0, 0.2);
             SRL::Scene3D::SetDirectionalLight(lightDirection);
-
 
             int scroll_speed = 30; //pixels per second
             int y_offset = (this->local_time * scroll_speed) / 1000; //calculate vertical offset based on elapsed time and scroll speed
@@ -390,13 +336,6 @@ class SceneCredits : public BaseScene
             SRL::Scene3D::LoadIdentity();
             // Set camera location and direction
             SRL::Scene3D::LookAt(cameraLocation, Vector3D(), Angle::FromDegrees(0.0));
-           
-           
-           // assets->cube_f.Draw();
-            
-           
-            
-           
 
         }
 };

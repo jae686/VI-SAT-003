@@ -258,8 +258,7 @@ class bitmapfont
         points[1] = Vector2D(w2,  -h2);
         points[2] = Vector2D( w2,  h2);
         points[3] = Vector2D(-w2,  h2);
-   
-        //Matrix33 transforms =  transformR *  translationM(cursor.X,cursor.Y) * transformS * translationM(x,y);     
+      
         Matrix33 transforms =  translationM(x,y)  * transformR  * translationM(cursor.X,cursor.Y) /* transformS*/  ; 
 
         Vector3D vec3_points[4] = {Vector3D(0.0)};
@@ -268,7 +267,6 @@ class bitmapfont
         vec3_points[2] = Vector3D(points[2], 1.0);
         vec3_points[3] = Vector3D(points[3], 1.0);
 
-       
         //transform the points
 
         for(int j = 0 ; j < 4 ; j++)
@@ -298,7 +296,6 @@ class bitmapfont
         uint16_t selectedPalette = paletteSelect >= 0 ? paletteSelect % numberOfPalettes : i % numberOfPalettes; 
       
         uint16_t paletteIndex =  palettes[selectedPalette].GetId(); 
-      //  SRL::Debug::Print(1, 6, "palette index %d", paletteIndex);
         SPR_ATTR attr = SPR_ATTRIBUTE( char_spr_id[(int)c], paletteIndex << 4, No_Gouraud, 0 | ECdis | CL16Bnk , FUNC_Texture  );
         SRL::Scene2D::Draw( &attr,points, 500.0);
         
@@ -357,9 +354,8 @@ class bitmapfont
         points[1] = Vector2D(w2,  -h2);
         points[2] = Vector2D( w2,  h2);
         points[3] = Vector2D(-w2,  h2);
-   
-        //Matrix33 transforms =  transformR *  translationM(cursor.X,cursor.Y) * transformS * translationM(x,y);     
-        Matrix33 transforms =  translationM(x,y)  * transformR  * translationM(cursor.X,cursor.Y) /* transformS*/  ; 
+       
+        Matrix33 transforms =  translationM(x,y)  * transformR  * translationM(cursor.X,cursor.Y) ; 
 
         Vector3D vec3_points[4] = {Vector3D(0.0)};
         vec3_points[0] = Vector3D(points[0], 1.0);
@@ -367,7 +363,6 @@ class bitmapfont
         vec3_points[2] = Vector3D(points[2], 1.0);
         vec3_points[3] = Vector3D(points[3], 1.0);
 
-       
         //transform the points
 
         for(int j = 0 ; j < 4 ; j++)

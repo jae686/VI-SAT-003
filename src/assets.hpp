@@ -23,8 +23,6 @@ class Assets : public BaseAssets
     std::vector<int32_t> texturePool;
     std::vector<int32_t> textureDots;
     
-    
-
     int32_t counters[7] = {0}; // to use for persistent data between frames index 0 - 0 : credits scene background is disabled, 1 otherwise
     SRL::Math::Types::Angle angles[6] = {0};
     Fxp floats[7] = {0};
