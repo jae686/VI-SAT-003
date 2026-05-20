@@ -185,7 +185,6 @@ class Scene02 : public BaseScene
                         assets->fonts.PrintString(textUPPER[i], -140, Fxp::Convert(y) , 0.0, Fxp(0.6) + (scale_f * 0.001), 0, 0);
                         SRL::Debug::Print(1,1,"y : %d , y_offset : %d", y, y_offset);
                     }
-                
                 }
             }
             
@@ -225,6 +224,47 @@ class Scene03 : public BaseScene
             SRL::Scene2D::DrawSprite(assets->texturePool[2], Vector3D(-160.0,-120,500),Vector3D(1.0), SRL::Scene2D::UpperLeft);
         }
 };
+
+class Scene04 : public BaseScene
+{
+    public :
+        // ---- Scene configuration ----
+        const char* textUPPER[9] = {"Code, 3D", "Jae686", "Volumetric Illusions", " ", "Sound , 2D", "Evil", "ACCESSION" };
+
+        Scene04(Assets * s) : BaseScene(s)
+        {
+           
+        }
+
+        void draw(uint32_t elapsed_ms)
+        {          
+            
+           if(this->firstFrame)
+            {
+                //one time events here
+                this->firstFrame = false;
+                //set start time for the scene
+                this->starts_at = elapsed_ms;
+            }
+            
+            SRL::Debug::Print(1,1,"SCENE4 - OUTRO");
+            this->local_time = elapsed_ms - this->starts_at;
+            int scroll_speed = 25; //pixels per second
+            int y_offset = (this->local_time * scroll_speed) / 1000; //calculate vertical offset based on elapsed time and scroll speed
+
+            for(int i = 0; i < 9; i++)
+            {
+                int y = (i * 25) + (16*9) - y_offset; //position each line with spacing and apply vertical offset, starting from the bottom of the screen
+                
+                if(y > -240 && y < 160) //only print lines that are within the screen
+                {
+                    assets->fonts.PrintString(textUPPER[i], -140, Fxp::Convert(y) , 0.0, Fxp(0.6) , 0, 0);
+                    SRL::Debug::Print(1,1,"y : %d , y_offset : %d", y, y_offset);
+                }
+            }
+        }
+};
+
 
 class SceneCredits : public BaseScene
 {

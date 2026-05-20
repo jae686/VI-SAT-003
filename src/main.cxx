@@ -39,7 +39,9 @@ int main()
     Scene01 scene01_s = Scene01(&assets);
     Scene02 scene02_s = Scene02(&assets);
     Scene03 scene03_s = Scene03(&assets);
+    Scene04 scene04_s = Scene04(&assets);
     SceneCredits sceneCredits_s = SceneCredits(&assets);
+
     // Frame counter
     uint32_t elapsedTime = 0;
     SRL::Sound::Cdda::Analysis::Start();
@@ -67,7 +69,6 @@ int main()
          
         switch(state)
         {
-            
             case fsm::states::scene01 : 
                 scene01_s.draw(elapsedTime);
             break;
@@ -77,16 +78,19 @@ int main()
             case fsm::states::scene03 : 
                 scene03_s.draw(elapsedTime);
             break;
-            case fsm::states::end : 
+            case fsm::states::scene04 : 
                 sceneCredits_s.draw(elapsedTime);
+            break;
+            case fsm::states::end : 
+                scene04_s.draw(elapsedTime);
             break;
            
             default : 
                 SRL::Sound::Cdda::StopPause(); 
                 SRL::Debug::PrintClearScreen();
                 SRL::Debug::Print(2, 3, "PARTY VERSION NOT FINAL");
-                SRL::Debug::Print(2, 4, "Code Jae686//Vollumetric Illusions");
-                SRL::Debug::Print(2, 5, "Sound, Gfx EviL//Accession");
+                SRL::Debug::Print(2, 4, "Code Jae686/Volumetric Illusions");
+                SRL::Debug::Print(2, 5, "Sound, Gfx EviL/Accession");
                 SRL::Debug::Print(2, 6, "Released at outline 2026");
                 SRL::Debug::Print(2, 8, "END");
             break;

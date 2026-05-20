@@ -9,12 +9,15 @@ class fsm
     public :
         
         enum class states : int {scene01 , scene02, scene03, scene04, scene05, end};
-        std::vector<fsm::states> state_lst = {  fsm::states::scene01, fsm::states::scene02, fsm::states::scene03,
+        std::vector<fsm::states> state_lst = {  fsm::states::scene01, fsm::states::scene02, fsm::states::scene03, fsm::states::scene04 ,
                                                 fsm::states::end
                                              };
         // total run time 157000 mses
-        std::vector<uint32_t> sceneMsTimes = {25 , 36660, 0, 52000}; //test
-       // std::vector<uint32_t> sceneMsTimes = {28340 , 36660, 68340, 52000}; //final
+        std::vector<uint32_t> sceneMsTimes = {25 , 0, 0, 0 , 50000}; //test
+       
+       //std::vector<uint32_t> sceneMsTimes = {25 , 36660, 0, 52000 , 10}; //test
+
+        // std::vector<uint32_t> sceneMsTimes = {28340 , 36660, 68340, 52000}; //final
        // std::vector<uint32_t> sceneMsTimes = {28340 , 36660, 0, 52000}; // party version
 
         std::vector<uint32_t> sceneMsTimesAccum = {};
